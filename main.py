@@ -35,31 +35,45 @@ class MainHandler(webapp.RequestHandler):
     def get(self):
        
        conversations_query = Conversation.all().order('-date')
-       conversations = conversations_query.fetch(10)
+       conversations = conversations_query.fetch(100)
        
        template_values = {
               'conversations' : conversations 
          }
        
-       r = self.request
-       conversation = Conversation(fromText = r.get('from'), 
-                                    toText = r.get('to'),
-                                    date = datetime.datetime.now().date())
+       #r = self.request
+      # conversation = Conversation(fromText = r.get('from'), 
+       #                             toText = r.get('to'),
+        #                            date = datetime.datetime.now().date())
        
-       conversation.put()
+       #conversation.put()
        
        path = os.path.join(os.path.dirname(__file__), 'index.html')
        self.response.out.write(template.render(path, template_values))
-       
+
+
+    def post(self):
+        r = self.request
+      #  self.response.out.write('test')
+        conversation = Conversation(fromText = r.get('from'),
+                                    toText = r.get('to'),
+                                    date = datetime.datetime.now().date())
+        
+        
+        self.response.out.write(conversation.fromText + ' ' + conversation.toText)
+
+        conversation.put()
 #       self.response.out.write('<html><body>')
 #       self.response.out.write(conversation.fromText + '</br>' + conversation.toText + '</br>' )
 #       self.response.out.write( conversation.date)
 #       self.response.out.write('</body></html>')
-       
+
+
+
 
 
 def main():
-    application = webapp.WSGIApplication([('/', MainHandler)],
+    application = webapp.WSGIApplication([('/', MainHandler),('/add',MainHandler)],
                                          debug=True)
     util.run_wsgi_app(application)
 

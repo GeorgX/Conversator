@@ -9,9 +9,11 @@
       <blockquote>{{ conversation.toText|escape }}</blockquote>
     {% endfor %}
 
-    <form action="/sign" method="post">
-      <div><textarea name="content" rows="3" cols="60"></textarea></div>
-      <div><input type="submit" value="Sign Guestbook"></div>
+    <form action="/add" method="post">
+      <div>Von:   <textarea name="from" rows="3" cols="60"></textarea></div>
+	  <div>An:     <textarea name="to" rows="3" cols="60"></textarea></div>
+	  <div>Datum: <input type="text" name="date" ></input></div>
+      <div><input type="submit" value="Speichern"></div>
     </form>
 
     <!-- <a href="{{ url }}">{{ url_linktext }}</a> -->
